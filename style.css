@@ -1,0 +1,21 @@
+body{
+    background-image: url(https://images.adsttc.com/media/images/5938/00dd/e58e/ce39/9200/0159/slideshow/00_JD_BH114_-_Active_Aging_Barrels.jpg?1496842451);
+}
+.list-group-item{
+    background-color:goldenrod;
+    font-style: italic;
+}
+
+.card-body{
+    background-color:tan;
+    font-weight: bold;
+   
+}
+
+.card{
+    border: 2px solid black;
+    
+}
+.color{
+    color:rgb(238, 246, 243);
+}
