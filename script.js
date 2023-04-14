@@ -1,44 +1,60 @@
+function generateJoke1(){
+  let url =`https://v2.jokeapi.dev/joke/Any?safe-mode`;
+let promiseData=fetch(url).then(data=>data.json()); 
+// fetch gives Promise Object response with readable stream of data, then we convert to json data of Promise Object
+console.log(promiseData) //from fetch we got Promise 
 
+promiseData.then(data=>displayData()); 
+// we access the result of promise using .then if fullfilled state
+// if rejected we use catch to get the result
+}
 
-var container = document.createElement("div");
-container.setAttribute("class", "container");
-var row = document.createElement("div");
-row.setAttribute("class", "row");
-row.classList.add("row", "m-3");
-container.append(row);
+async function generateJoke(){
+  let url =`https://v2.jokeapi.dev/joke/Any?safe-mode`;
+  console.log(fetch(url)); //promise response is given by fetch
+let fetchResponse=await fetch(url); 
+console.log("fetch Response is",fetchResponse);
+// fetch gives response with readable stream of data then we convert to json data
+// console.log(apiData) //from fetch we got Promise 
+let apiPromiseData =fetchResponse.json();
+console.log("apiPromiseData is",apiPromiseData);
+// apiPromiseData.then(data=>console.log("then data is",data));  
+// we access the result of promise using .then if fullfilled state
+// if rejected we use catch to get the result
 
+apiPromiseData.then(data=>displayData(data)).catch(err=>console.log(err.message));
 
-async function drinkdata() {
-  let response = await fetch("https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita")
-  let data = await response.json();
-  console.log(data.drinks);
-  for (let i = 0; i < 6; i++) {
-    let drink = data.drinks[i];
-    console.log(drink);
-    row.innerHTML += `<div class="col-md-4">
-     <div class="card" style="width: 18rem;">
-  <img src="${data.drinks[i].strDrinkThumb}" class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title">TYPE:${data.drinks[i].strCategory}</h5>
-    <p class="card-text">${data.drinks[i].strInstructions}</p>
-    
-  </div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">${data.drinks[i].strIngredient1}</li>
-    <li class="list-group-item">Name:${data.drinks[i].strDrink}</li>
-    <li class="list-group-item">Glass Type:${data.drinks[i].strGlass}</li>
-  </ul>
-  </div>`;
-
-    document.body.append(container);
-  }
 }
 
 
+function displayData(dataObj){
+  console.log(dataObj);
+  let resultEl=document.createElement("div");
+  resultEl.classList.add("rac");
+  resultEl.innerHTML=`  
+  <div class="card mt-3 mx-auto  bg-dark opacity-75 " style="width:500px; height:250px">
+  <h5 class="card-header text-end text-secondary fst-italic ">${dataObj.category}</h5>
+  <div class="card-body">
+      <a href="#" class="btn btn-primary float-end " onclick="showreply()">Get Reply</a>
+      <h5 class="card-title">${dataObj.setup}</h5>
+      <br>
+      <h5 id="reply-text"  class="card-title text-success"> ${dataObj.delivery} </h5>               
+    
+  </div>  
+</div>`;
 
+var alreadyappendedEl=document.getElementsByClassName("rac");
+for(x of alreadyappendedEl){
+  x.remove();
+}
 
+document.body.append(resultEl);
+  
+}
 
-drinkdata();
-
-
-
+function showreply(){
+  let replyEl=document.getElementById("reply-text");
+  if(replyEl.style.display="none"){
+    replyEl.style.display="block";
+  }
+}
